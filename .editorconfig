@@ -1,0 +1,1018 @@
+root = true
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Photo Album</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .page-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .page-links a:hover, .page-links a.active {
+            background-color: white;
+            color: #2c3e50;
+        }
+
+        .category-section {
+            display: none;
+            padding: 2rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+        }
+
+        .category-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            padding: 0 1rem;
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 0 1rem;
+        }
+
+        .gallery-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-info {
+            padding: 15px;
+        }
+
+        .photo-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .photo-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 20px;
+            }
+            
+            .page-links {
+                gap: 5px;
+            }
+            
+            .page-links a {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Photo Album</h1>
+        <div class="page-links">
+            <a href="#" class="nav-link active" data-target="photos">My-Photos</a>
+            <a href="#" class="nav-link" data-target="home-town">Hometown</a>
+            <a href="#" class="nav-link" data-target="favorite-food">favorite food</a>
+            <a href="#" class="nav-link" data-target="favorite-anime">Favorite Anime</a>
+            <a href="#" class="nav-link" data-target="Hobbies">Hobbies</a>
+        </div>
+    </header>
+
+    <!-- Nature Section -->
+    <section id="photos" class="category-section active">
+        <h2>My-photos</h2>
+        <div class="category-description">
+            “Hi, my name is CLINT BATANDOLO, and this is a glimpse into my journey. Each photo here tells a story—moments of growth, joy, and inspiration. 
+            Through these snapshots, I celebrate life’s little victories, embrace challenges, and share the motivation that keeps me moving forward.”
+        <div class="gallery">
+            <!-- 20 Nature Photos -->
+            <div class="gallery-item">
+                <img src="{{ asset('images/image1.png') }}" alt="Nature Photo 1">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Believe in yourself and all that you are.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image2.png') }}" alt="Nature Photo 2">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Dream big. Work hard. Stay focused.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image3.png') }}" alt="Nature Photo 3">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Every day is a new beginning.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image3.png') }}" alt="Nature Photo 4">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Your only limit is you.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image5.png') }}" alt="Nature Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Small steps every day lead to big results.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image6.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Be stronger than your excuses.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image7.png') }}" alt="Nature Photo 7">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Progress, not perfection.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image8.png') }}" alt="Nature Photo 8">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Do something today that your future self will thank you for.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image9.png') }}" alt="Nature Photo 9">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Hustle in silence, let success make the noise.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image10.png') }}" alt="Nature Photo 10">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Stay positive, work hard, make it happen.”</div>
+                </div>
+            </div>
+                        <div class="gallery-item">
+                <img src="{{ asset('images/image11.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Difficult roads often lead to beautiful destinations.”</div>
+                </div>
+            </div>
+            <!-- Additional 10 nature photos would go here -->
+             <div class="gallery-item">
+                <img src="{{ asset('images/image12.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Don’t wait for opportunity. Create it.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image13.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Focus on the step in front of you, not the whole staircase.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image14.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Success is the sum of small efforts repeated daily.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image15.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title">M</div>
+                    <div class="photo-description">“Your vibe attracts your tribe.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image16.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Push yourself, because no one else is going to do it for you.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image17.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Turn your dreams into plans.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image18.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Be fearless in the pursuit of what sets your soul on fire.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ asset('images/image19.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Believe you can, and you’re halfway there.”</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="{{ asset('images/image20.png') }}" alt="Nature Photo 6">
+                <div class="photo-info">
+                    <div class="photo-title"></div>
+                    <div class="photo-description">“Life is tough, but so are you.”</div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    
+    <section id="home-town" class="category-section">
+        <h2>Hometown Photos</h2>
+        <div class="category-description">
+           Bantayan Island, located at the northern tip of Cebu, is a serene paradise known for its white-sand beaches, crystal-clear waters, and friendly locals. Rich in culture and tradition, the island offers a peaceful escape, where visitors can enjoy stunning sunsets, vibrant fishing villages, and the simple beauty of island life.
+        </div>
+        <div class="gallery">
+            <!-- 20 Architecture Photos -->
+            <div class="gallery-item">
+                <img src="https://www.nopostcode.com/wp-content/uploads/2022/04/Paradise-Beach-Bantayan-6.jpg" alt="Architecture Photo 1">
+                <div class="photo-info">
+                    <div class="photo-title">Bantayan Island Beach</div>
+                    <div class="photo-description">“Soft white sand beneath the palms — a perfect moment on Bantayan Island where time seems to slow.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://www.moalboalecolodge.com/uploads/7/1/0/0/71000831/img20220301103636_orig.jpg" alt="Architecture Photo 2">
+                <div class="photo-info">
+                    <div class="photo-title">Historic Cathedral</div>
+                    <div class="photo-description">“Rows of coconut trees whispering in the breeze: the island’s steady guardians of peaceful shores.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://d3hukd8e3cn3kb.cloudfront.net/images/posts/sunsetwithu/cover.jpg" alt="Architecture Photo 3">
+                <div class="photo-info">
+                    <div class="photo-title">Sunset Seascape</div>
+                    <div class="photo-description">“Pastel sky reflecting on the ocean, capturing the magical hour before nightfall.”</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://iloilo.gov.ph/sites/default/files/2024-06/BANTAY-DAGAT-NABS-ILLEGAL-FISHERS-FROM-BANTAYAN-ISLAND-CEBU.jpg" alt="Architecture Photo 4">
+                <div class="photo-info">
+                    <div class="photo-title">Modern House</div>
+                    <div class="photo-description">Clean lines and minimalist design in this contemporary residential architecture.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://theadventurer.video.blog/wp-content/uploads/2019/04/2019-04-04-11-55-36-10043652201592971147.jpg?w=640" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Suspension Bridge at Night</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+            <!-- Additional 15 architecture photos would go here -->
+              <div class="gallery-item">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/55/97/3e/ogtong-cave-resort.jpg?h=500&s=1&w=900" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Ogtong Cave Resort</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://res.klook.com/image/upload/w_750%2Ch_469%2Cc_fill%2Cq_85/w_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3/activities/qrdrvazewadua9rcxw00.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Island Adventure Activity</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://www.nopostcode.com/wp-content/uploads/2022/04/Virgin-Island-Bantayan-19.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Virgin Island</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://i.ytimg.com/vi/3kNGOPzRR-Y/hq720.jpg?rs=AOn4CLDAcvI5yvnq7y0vcsPPyjP9UD-7zw&sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Island Shoreline Drone View</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://thetravellingfool.com/wp-content/uploads/2013/08/church-3-1-of-1.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Historic Church</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://www.thisissoutheastasia.com/wp-content/uploads/2025/01/Field-640x360.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Island Fields</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://i.ytimg.com/vi/W2YhXlBzbPI/mqdefault.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Urban Bridge View</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://www.nopostcode.com/wp-content/uploads/2022/05/Bantayan-Tourist-Spots-16.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Bantayan Island Tour Scene</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://www.nopostcode.com/wp-content/uploads/2022/04/The-Ruins-Bantayan-2.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Seaside Resort</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://cdn.create.vista.com/api/media/small/163216556/stock-video-video-showing-coconut-palm-trees-set-bantayan-island-sunset-crescent?token=&videoStaticPreview=true" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Scenic Island Bay</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://nolisoli.ph/wp-content/uploads/2023/06/Bantayan-Island-tricycle-jeep-tour-nolisoliph.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Coconut Palms at Sunset</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://live.staticflickr.com/1620/25413212661_95e1e1204c_b.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Local Lifestyle Shot</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://lillagreen.com/wp-content/uploads/2024/03/Bantayan-Philippines-Travel-Guide-03.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Local Lifestyle Shot</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://travelinsighter.com/wp-content/uploads/2024/11/Bantayan-Island-2.jpg.webp" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Bantayan Travel Guide View</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://live.staticflickr.com/7141/6682239453_afd7d6311c_b.jpg" alt="Architecture Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Beachfront Leisure</div>
+                    <div class="photo-description">Elegant suspension bridge spanning a wide river with city lights in the background.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animals Section -->
+    <section id="favorite-food" class="category-section">
+        <h2>Food Photos</h2>
+        <div class="category-description">
+           Filipino food is one of my favorites because it is full of flavor, color, and culture. Each dish has a unique taste and story that reminds me of home, family, and special celebrations. From savory dishes like adobo and sinigang to sweet treats like leche flan and halo-halo, Filipino cuisine shows the creativity and warmth of our people. These are some of my favorite Filipino foods and the reasons why I love them.
+        </div>
+        <div class="gallery">
+            <!-- 20 Animal Photos -->
+            <div class="gallery-item">
+                <img src="https://www.allrecipes.com/thmb/koFD08H_utDaUsNc578_YZ2peFg=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/8635-southern-fried-chicken-ddmfs_4x3-90736ab31a7a4bb59eb04e2380ccebe7.jpg" alt="Animal Photo 1">
+                <div class="photo-info">
+                    <div class="photo-title">Fried chicken</div>
+                    <div class="photo-description">AFried chicken is my favorite food because it’s crispy, juicy, and always delicious..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmm2lV7Vm3RF061Q-PoYVpUWUKBd15qRqPdw&s" alt="Animal Photo 2">
+                <div class="photo-info">
+                    <div class="photo-title">Lecheflan</div>
+                    <div class="photo-description">Leche flan is my favorite dessert because it’s sweet, creamy, and melts in my mouth..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://www.nestlegoodnes.com/ph/sites/default/files/styles/1_1_768px_width/public/srh_recipes/442ce059c4c490e1ab61cdaef9c98511.jpg.webp?itok=sKq8qila" alt="Animal Photo 3">
+                <div class="photo-info">
+                    <div class="photo-title">sinigang</div>
+                    <div class="photo-description">I love sinigang because its sour soup always makes me feel warm and comforted..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="data:image/jpeg;base64,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" alt="Animal Photo 4">
+                <div class="photo-info">
+                    <div class="photo-title">lechon</div>
+                    <div class="photo-description">I like lechon because it’s crispy on the outside and juicy inside—perfect for celebrations..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSOwghkLdhvXLY9Vt_q8qbVSdbfPefReZnzw&s" alt="Animal Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">pancit canton</div>
+                    <div class="photo-description">A tall giraffe reaching for leaves at the top of an acacia tree.</div>
+                </div>
+            </div>
+            <!-- Additional 15 animal photos would go here -->
+             <div class="gallery-item">
+                <img src="https://barefeetinthekitchen.com/wp-content/uploads/2025/05/Lumpia-BFK-8.jpg" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">lumpia</div>
+                    <div class="photo-description">I like lumpia because it’s crunchy, flavorful, and fun to dip in sweet sauce..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVHxVonsbUEkZGfTfZEoZgq_nNR6lTfVceEg&s" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Caldereta</div>
+                    <div class="photo-description">I love caldereta because it’s cheesy, meaty, and full of flavor..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgeSIhB4CSqTg3ldHEAfdEzKodU2EQZAuqSg&s" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Bibingka</div>
+                    <div class="photo-description">I enjoy bibingka because it’s soft, warm, and perfect during Christmas time..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl3minfwZH-6qxcMA89e3tLh59Ov5zvZ2OuQ&s" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Dinuguan</div>
+                    <div class="photo-description">I love dinuguan because it’s savory, unique, and perfect with rice or puto..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJmaBGcXxD7_Ak3SJtEouO3grWwZs7-vHcrQ&s" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Bicol Express</div>
+                    <div class="photo-description">I like Bicol Express because I love the mix of spiciness and coconut milk..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp9eF6wqBiz8fS9zujBlNEWarxKvZzb4fEVA&s" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Tortang Talong</div>
+                    <div class="photo-description">I like tortang talong because it’s simple, smoky, and tastes great with rice and ketchup..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://www.simpol.ph/wp-content/uploads/2025/06/BEEF-PARES.jpg" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Pares</div>
+                    <div class="photo-description">I enjoy pares because it’s rich, savory, and perfect with garlic rice..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRthmWxok0PF84m10PYPnAmZPmY33p-JBVdfg&s" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Turon</div>
+                    <div class="photo-description">I love turon because it’s sweet, crispy, and filled with banana and caramelized sugar..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_pE45etYqapY7e3pFHeCgbcB1MwaKuqeRuQ&s" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Ginataang Gulay</div>
+                    <div class="photo-description">I love ginataang gulay because it’s creamy, healthy, and full of coconut flavor.</div>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://yummykitchentv.com/wp-content/uploads/2023/01/pork-lomi-recipe-480x270.jpg" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Lomi</div>
+                    <div class="photo-description">I like lomi because it’s thick, warm, and full of noodles and toppings.</div>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://cdn-ilddihb.nitrocdn.com/MgqZCGPEMHvMRLsisMUCAIMWvgGMxqaj/assets/images/optimized/rev-9baa5ce/www.goya.com/wp-content/uploads/2023/10/empanadas-beef-turnovers-900x900.jpg" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Empanada</div>
+                    <div class="photo-description">I enjoy empanada because it’s crunchy on the outside and filled with flavorful meat and veggies inside.</div>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://www.allrecipes.com/thmb/VEO6KuVL7sO4TY91yYkomH_rGxo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/265040-Filipino-Beef-Giniling-ddmfs-4x3-251-1-ab56932dcb8b4fb78bf6c1b56217962b.jpg" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Giniling</div>
+                    <div class="photo-description">I love giniling because it’s tasty, easy to eat, and goes perfectly with rice.</div>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://i0.wp.com/www.angsarap.net/wp-content/uploads/2024/05/Longganisa-Tuguegarao-Wide.jpg?fit=1080%2C720&ssl=1" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Longganisa</div>
+                    <div class="photo-description">I enjoy longganisa because it’s sweet, garlicky, and perfect for breakfast.</div>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://www.kawalingpinoy.com/wp-content/uploads/2021/10/champorado-1.jpg" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Champorado</div>
+                    <div class="photo-description">I like champorado because it’s chocolatey, warm, and comforting on cold mornings.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Kutsinta.jpg" alt="Food Photo">
+                <div class="photo-info">
+                    <div class="photo-title">Kutsinta</div>
+                    <div class="photo-description">I like kutsinta because it’s chewy, slightly sweet, and delicious with grated coconut.</div>
+                </div>
+            </div>
+
+            
+
+        </div>
+
+    </section>
+
+    <!-- People Section -->
+    <section id="favorite-anime" class="category-section">
+        <h2>Favorite Anime</h2>
+        <div class="category-description">
+            love anime of all kinds, from epic adventures to cozy slice-of-life stories. My hobbies—solving Rubik’s Cubes, creating and editing digital content, reading, journaling, cooking, and fitness—bring that same passion to life. Sharing them online feels like being part of a global anime community, where we connect, inspire each other, and level up together.
+        </div>
+        <div class="gallery">
+            <!-- 20 People Photos -->
+            <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BZTNjOWI0ZTAtOGY1OS00ZGU0LWEyOWYtMjhkYjdlYmVjMDk2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="People Photo 1">
+                <div class="photo-info">
+                    <div class="photo-title">Naruto</div>
+                    <div class="photo-description">I like Naruto because it teaches about never giving up and believing in yourself.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://preview.redd.it/what-is-it-that-makes-one-piece-so-popular-v0-0u2aefrzacmc1.jpeg?width=640&crop=smart&auto=webp&s=677fd91070fcfdd8e1161bb7658b9df751ada98a" alt="People Photo 2">
+                <div class="photo-info">
+                    <div class="photo-title">One Piece</div>
+                    <div class="photo-description">I love One Piece because it’s full of adventure, friendship, and exciting battles.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BNzVjOWEwYjEtNDJhOC00YjUyLThjMWItMDQwZGY1ODM4YzI3XkEyXkFqcGc@._V1_.jpg" alt="People Photo 3">
+                <div class="photo-info">
+                    <div class="photo-title">Attack on Titan</div>
+                    <div class="photo-description">I enjoy Attack on Titan because it’s intense, emotional, and full of mystery.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BMWU1OGEwNmQtNGM3MS00YTYyLThmYmMtN2FjYzQzNzNmNTE0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="People Photo 4">
+                <div class="photo-info">
+                    <div class="photo-title">Demon Slayer (Kimetsu no Yaiba)</div>
+                    <div class="photo-description">I like Demon Slayer because of its beautiful animation and touching story about family.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://imgsrv.crunchyroll.com/cdn-cgi/image/fit=cover,format=auto,quality=85,width=1920/keyart/G6NQ5DWZ6-backdrop_wide" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">My Hero Academia</div>
+                    <div class="photo-description">I love My Hero Academia because it’s inspiring and shows that anyone can be a hero.</div>
+                </div>
+            </div>
+            <!-- Additional 15 people photos would go here -->
+              <div class="gallery-item">
+                <img src="https://images.justwatch.com/poster/251128847/s718/tokyo-revengers.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Tokyo Revengers</div>
+                    <div class="photo-description">I like Tokyo Revengers because it’s full of action, loyalty, and second chances.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BMjBlNTExMDAtMWZjZi00MDc5LWFkMjgtZDU0ZWQ5ODk3YWY5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Jujutsu Kaisen</div>
+                    <div class="photo-description">I love Jujutsu Kaisen because of its cool fights and strong, funny characters.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BYjYxMWFlYTAtYTk0YS00NTMxLWJjNTQtM2E0NjdhYTRhNzE4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Haikyuu!!</div>
+                    <div class="photo-description">I enjoy Haikyuu!! because it’s exciting and shows the power of teamwork and passion.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2-Cn-7TyKjzKaBQdiOuuXJuWtOpwfA0O2XA&s" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Sword Art Online</div>
+                    <div class="photo-description">I like Sword Art Online because it mixes gaming, adventure, and love.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/72/Death_Note_Characters.jpg/250px-Death_Note_Characters.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Death Note</div>
+                    <div class="photo-description">I love Death Note because it’s smart, thrilling, and full of mind games.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHqFt3ofc2ZvWAGRx9ou2KDi2-zWBUH-UvGQ&s" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Hunter x Hunter</div>
+                    <div class="photo-description">I enjoy Hunter x Hunter because of its fun adventures and amazing storylines.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BODlhNTQ3ZDgtMDJlMC00YzdmLWE3ZTMtOWNmMTZkN2I2MzI5XkEyXkFqcGc@._V1_QL75_UY281_CR4,0,190,281_.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Fairy Tail</div>
+                    <div class="photo-description">I like Fairy Tail because it’s all about friendship, magic, and never giving up..</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://upload.wikimedia.org/wikipedia/en/6/62/Blue_Exorcist_vol_1.png" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Blue Exorcist</div>
+                    <div class="photo-description">I love Blue Exorcist because of its mix of action, humor, and family bonds..</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BZmZkZjNhMWMtM2U0Mi00MjdlLTk3NmMtMTMwZjgwOTJmODMzXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Black Clover</div>
+                    <div class="photo-description">I enjoy Black Clover because it’s motivating and full of powerful battles.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BZDkwNjc0NWEtNzJlOC00N2YwLTk4MjktZGFlZDE2Y2QzOWI0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Spy x Family</div>
+                    <div class="photo-description">I like Spy x Family because it’s funny, wholesome, and full of secret missions.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1617389215i/55575967.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Chainsaw Man</div>
+                    <div class="photo-description">I love Chainsaw Man because it’s wild, dark, and has deep emotional moments.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM6i-DwiJ_EIbNuU4G0DMrWuPmwgyDaZ4XOw&s" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Your Name (Kimi no Na wa)</div>
+                    <div class="photo-description">I like Your Name because it’s romantic, emotional, and beautifully animated.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BOTFiNzRiOWEtYTQwNy00NmRiLWE0ZWYtNTE0YjExZjFmZjkwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">A Silent Voice (Koe no Katachi)</div>
+                    <div class="photo-description">I love A Silent Voice because it teaches forgiveness and understanding.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://m.media-amazon.com/images/M/MV5BNzMwOGQ5MWItNzE3My00ZDYyLTk4NzAtZWIyYWI0NTZhYzY0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">One Punch Man.</div>
+                    <div class="photo-description">BI enjoy One Punch Man because it’s hilarious and full of epic action.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://www.shutterstock.com/image-vector/cartoon-background-transparent-doraemon-nobita-600nw-2364737497.jpg" alt="People Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Doraemon</div>
+                    <div class="photo-description">I like Doraemon because it’s fun, nostalgic, and full of creative gadgets.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Miscellaneous Section -->
+    <section id="Hobbies" class="category-section">
+        <h2>Hobbies photos</h2>
+        <div class="category-description">
+          I have hobbies that keep me inspired and entertained, from solving Rubik’s Cubes to creating and editing digital content. I also enjoy reading, journaling, cooking, and fitness, which help me relax and grow. Sharing these online lets me connect with others who share the same passions.
+        </div>
+        <div class="gallery">
+            <!-- 20 Miscellaneous Photos -->
+            <div class="gallery-item">
+                <img src="https://www.lifewire.com/thmb/3qmK8RHqbxNRL-eALfCpKp-121Y=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1552744698-5d5f5ce5139f495482e0c9e2b820f265.jpg" alt="Misc Photo 1">
+                <div class="photo-info">
+                    <div class="photo-title">Watching Movies</div>
+                    <div class="photo-description">I enjoy watching movies because it helps me relax and feel inspired.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://cloudfront-eu-central-1.images.arcpublishing.com/thenational/IXA3CB6DLZDVLICUSKBAKMFGUM.jpg" alt="Misc Photo 2">
+                <div class="photo-info">
+                    <div class="photo-title">Playing Games</div>
+                    <div class="photo-description">I love playing games because it’s exciting and helps me bond with friends.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSJtHaKrsNfbHLA6ezWQxv27jIqxMaHih2ZQ&s" alt="Misc Photo 3">
+                <div class="photo-info">
+                    <div class="photo-title">Cooking</div>
+                    <div class="photo-description">I like cooking because it’s fun to make delicious food and share it with others..</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW_B5r0bFK41Y2wI266qBGM9Y0o5E8fTv-Cg&s" alt="Misc Photo 4">
+                <div class="photo-info">
+                    <div class="photo-title">Photography</div>
+                    <div class="photo-description">I love photography because it allows me to capture beautiful moments and memories forever.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSbEVPgRU0Uh530k1O56abeF1Bpy7pSjhorQ&s" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Playing Sports</div>
+                    <div class="photo-description">I like playing sports because it keeps me active, challenges me, and helps me bond with others.</div>
+                </div>
+            </div>
+            <!-- Additional 15 miscellaneous photos would go here -->
+              <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjdHdSI9eyAbfGncz9Go7unD7ktZvuRmyO6w&s" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Traveling</div>
+                    <div class="photo-description">I enjoy traveling because it exposes me to new cultures, foods, and experiences that broaden my perspective.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://i.ytimg.com/vi/H49twuFKwmc/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBNAoZQxgTtl4nnkFyS5JC0rVPAjg" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Gaming (video or board games)</div>
+                    <div class="photo-description">I like gaming because it’s a mix of strategy, creativity, and entertainment.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://hellscanyon.tours/wp-content/uploads/2023/01/RiverAdventuresInc-214207-Pieces-Fishing-Equipment-blogbanner1.jpg" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Fishing</div>
+                    <div class="photo-description">Fishing is relaxing because it allows me to enjoy quiet time and appreciate nature.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/237266/pexels-photo-237266.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Nature Photography</div>
+                    <div class="photo-description">I enjoy nature photography because capturing landscapes, plants, and animals preserves their beauty forever.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh8x65G9aVMi6VVJBI5NKQXLkaIhDKYsrlLA&s" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Camping</div>
+                    <div class="photo-description">Camping is enjoyable because sleeping under the stars and being close to nature feels peaceful and freeing.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://sm.pcmag.com/t/pcmag_me/gallery/t/the-best-o/the-best-online-video-editors-for-2025_hrjt.1200.jpg" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Video Editing</div>
+                    <div class="photo-description">Creating polished videos for YouTube, TikTok, or Instagram; you enjoy transforming raw clips into engaging stories and seeing how viewers respond.</div>
+                </div>
+            </div>
+             <div class="gallery-item">
+                <img src="https://cdn-useast1.kapwing.com/static/CIf-aiimght.webp" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Photo Editing</div>
+                    <div class="photo-description">Enhancing images for social media; it’s fun to experiment with filters, color, and composition to make your content pop.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://www.wikihow.com/images/thumb/2/2f/Workout-Routine-for-Beginners-Step-4.jpg/v4-460px-Workout-Routine-for-Beginners-Step-4.jpg" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Fitness / Exercise Routine</div>
+                    <div class="photo-description">Personal workouts, yoga, or running; online apps or communities provide tracking, tips, and encouragement.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRewVYLV92mwtu_E0guAzIckdnAim-0gdPzLQ&s" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Pet Care / Training</div>
+                    <div class="photo-description">Taking care of pets; sharing cute moments or tips online connects you with other pet lovers.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ58C-AlLuAmm-gfWGAwX8qkCfQk0gxYa6Pw&s" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Fashion / Personal Styling</div>
+                    <div class="photo-description">Experimenting with clothes and accessories; sharing outfits online lets you get feedback and connect with style communities.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://i.ytimg.com/vi/hdbpgcg3tYI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDrX5nPnFCglKWth-GxuLPY5dl1lQ" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Sketching / Drawing</div>
+                    <div class="photo-description">Relaxing and expressing yourself creatively; sharing your art online can get encouragement and inspiration.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTw_S7UVgcEVEw7mdAuEdENP15j2bEs52Xgw&s" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">DIY Home Improvement</div>
+                    <div class="photo-description">Fixing or decorating your living space; sharing progress online motivates you and inspires others.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREKGGfNIalC-ddv1yADwbfMPem6qXZ__oZMg&s" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Self-Care Routines / Skincare </div>
+                    <div class="photo-description">Personal wellness hobby; sharing tips online can help others and build community.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHsD-SyLZSnCrGQoJhhxlYWxN0Zj2u0GSVfw&s" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">Learning New Skills / Online Course</div>
+                    <div class="photo-description">Expanding knowledge; sharing progress or achievements online keeps you accountable.</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.newscientist.com/wp-content/uploads/2017/06/30133803/pa-30292018.jpg" alt="Misc Photo 5">
+                <div class="photo-info">
+                    <div class="photo-title">playing rubics cube</div>
+                    <div class="photo-description">I like the challenge – Every time I pick up the cube, it’s like solving a new puzzle. I enjoy testing my brain and figuring out the steps to solve it.</div>
+                </div>
+            </div>
+            
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 My Photo Album. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set Nature as the default active page
+            document.getElementById('photos').classList.add('active');
+            
+            // Navigation functionality
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and sections
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    document.querySelectorAll('.category-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Show the corresponding section
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                    
+                    // Scroll to top of the page
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
